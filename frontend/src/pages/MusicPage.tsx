@@ -97,7 +97,7 @@ export const MusicPage = () => {
             fontSize: { xs: '28px', sm: '36px', md: '42px' },
           }}
         >
-          🎵 Choose Your Music
+        Choose Your Music
         </Typography>
       </Box>
 
