@@ -1,5 +1,6 @@
 import { Box, Button } from '@mui/material';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleMusic } from '../../features/settings/settingsSlice';
 
@@ -8,6 +9,7 @@ interface BottomButtonsProps {
 }
 
 export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const { musicEnabled } = useAppSelector((state) => state.settings);
 
@@ -41,7 +43,9 @@ export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
     >
       {/* My Music */}
       <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-        <Button sx={buttonStyle}>My Music</Button>
+        <Button onClick={() => navigate('/music')} sx={buttonStyle}>
+          My Music
+        </Button>
       </motion.div>
 
       {/* MUSIC Toggle */}
@@ -52,8 +56,6 @@ export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
             ...buttonStyle,
             bgcolor: musicEnabled ? '#10B981' : '#EF4444',
             border: '3px solid #000',
-            position: 'relative',
-            overflow: 'hidden',
             '&:hover': {
               bgcolor: musicEnabled ? '#059669' : '#DC2626',
               transform: 'translateY(-2px)',
@@ -61,15 +63,7 @@ export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
             },
           }}
         >
-          <motion.span
-            initial={false}
-            animate={{
-              x: musicEnabled ? 0 : -100,
-            }}
-            transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-          >
-            MUSIC
-          </motion.span>
+          {musicEnabled ? 'MUSIC ON' : 'MUSIC OFF'}
         </Button>
       </motion.div>
 

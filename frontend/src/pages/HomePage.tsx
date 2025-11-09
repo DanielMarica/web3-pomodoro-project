@@ -1,15 +1,9 @@
 import { Box } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState, type FC } from 'react';
+import { useState } from 'react';
 import { Header } from '../components/layout/Header';
 import { CircularTimer } from '../components/timer/CircularTimer';
-// Local fallback BottomButtons component in case the external module is missing
-type BottomButtonsProps = { onTasksClick?: () => void };
-const BottomButtons: FC<BottomButtonsProps> = ({ onTasksClick }) => (
-  <Box sx={{ display: 'flex', gap: 2 }}>
-    <button onClick={onTasksClick}>Tasks</button>
-  </Box>
-);
+import { BottomButtons } from '../components/timer/BottomButtons';
 import { TaskSidebar } from '../components/tasks/TaskSidebar';
 
 export const HomePage = () => {
@@ -59,7 +53,7 @@ export const HomePage = () => {
           initial={{ y: 50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          style={{ marginTop: '2rem' }}
+          style={{ marginTop: '4rem' }}
         >
           <BottomButtons onTasksClick={() => setShowTasks(true)} />
         </motion.div>

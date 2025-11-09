@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Box, TextField, IconButton } from '@mui/material';
+import { Box, TextField, IconButton, Select, MenuItem, FormControl, Typography } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { useAppDispatch } from '../../store/hooks';
@@ -7,11 +7,13 @@ import { addTask } from '../../features/tasks/tasksSlice';
 
 const AddTaskContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
-  gap: theme.spacing(1),
+  flexDirection: 'column',
+  gap: theme.spacing(2),
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper,
   borderRadius: '12px',
   boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
+  border: '2px solid #000',
 }));
 
 const StyledTextField = styled(TextField)({
@@ -34,9 +36,23 @@ const AddButton = styled(IconButton)(({ theme }) => ({
   transition: 'all 0.2s ease',
 }));
 
+const TimeSelector = styled(FormControl)(() => ({
+  minWidth: 120,
+  '& .MuiOutlinedInput-root': {
+    borderRadius: '8px',
+    border: '2px solid #000',
+    backgroundColor: '#fff',
+    '&:hover': {
+      backgroundColor: '#f9f9f9',
+    },
+  },
+}));
+
 export const AddTaskButton: React.FC = () => {
   const dispatch = useAppDispatch();
   const [taskTitle, setTaskTitle] = useState('');
+  const [estimatedPomodoros, setEstimatedPomodoros] = useState(1);
+  const [estimatedBreakPomodoros, setEstimatedBreakPomodoros] = useState(1);
 
   const handleAddTask = () => {
     if (taskTitle.trim()) {
@@ -44,8 +60,12 @@ export const AddTaskButton: React.FC = () => {
         title: taskTitle.trim(),
         completed: false,
         pomodorosCount: 0,
+        estimatedPomodoros,
+        estimatedBreakPomodoros,
       }));
       setTaskTitle('');
+      setEstimatedPomodoros(1);
+      setEstimatedBreakPomodoros(1);
     }
   };
 
@@ -57,21 +77,66 @@ export const AddTaskButton: React.FC = () => {
 
   return (
     <AddTaskContainer>
+      <Typography variant="subtitle2" fontWeight={600} sx={{ mb: 0.5 }}>
+        ➕ Nouvelle Tâche
+      </Typography>
+      
       <StyledTextField
         size="small"
-        placeholder="+ Ajouter une tâche..."
+        placeholder="Nom de la tâche..."
         value={taskTitle}
         onChange={(e) => setTaskTitle(e.target.value)}
         onKeyPress={handleKeyPress}
         variant="outlined"
+        fullWidth
       />
-      <AddButton
-        onClick={handleAddTask}
-        disabled={!taskTitle.trim()}
-        size="medium"
-      >
-        <Add />
-      </AddButton>
+
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-end' }}>
+          <TimeSelector size="small" fullWidth>
+            <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: 'block' }}>
+              Temps de travail
+            </Typography>
+            <Select
+              value={estimatedPomodoros}
+              onChange={(e) => setEstimatedPomodoros(Number(e.target.value))}
+              size="small"
+            >
+              {[1, 2, 3, 4, 5, 6, 7, 8].map((num) => (
+                <MenuItem key={num} value={num}>
+                  {num} Pomodoro{num > 1 ? 's' : ''} ({num * 25} min)
+                </MenuItem>
+              ))}
+            </Select>
+          </TimeSelector>
+
+          <TimeSelector size="small" fullWidth>
+            <Typography variant="caption" color="text.secondary" sx={{ mb: 0.5, display: 'block' }}>
+              Temps de pause
+            </Typography>
+            <Select
+              value={estimatedBreakPomodoros}
+              onChange={(e) => setEstimatedBreakPomodoros(Number(e.target.value))}
+              size="small"
+            >
+              {[1, 2, 3, 4, 5].map((num) => (
+                <MenuItem key={num} value={num}>
+                  {num} Pause{num > 1 ? 's' : ''} ({num * 5} min)
+                </MenuItem>
+              ))}
+            </Select>
+          </TimeSelector>
+
+          <AddButton
+            onClick={handleAddTask}
+            disabled={!taskTitle.trim()}
+            size="large"
+            sx={{ minWidth: 56, height: 56 }}
+          >
+            <Add sx={{ fontSize: 28 }} />
+          </AddButton>
+        </Box>
+      </Box>
     </AddTaskContainer>
   );
 };

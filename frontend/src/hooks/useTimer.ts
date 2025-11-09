@@ -41,6 +41,18 @@ export const useTimer = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []); // Seulement au montage initial
 
+  // Synchroniser le timer quand les settings changent (si le timer n'est pas en cours)
+  useEffect(() => {
+    // Ne pas mettre à jour si le timer est en cours d'exécution
+    if (isRunning) return;
+    
+    if (mode === 'focus') {
+      dispatch(updateTimerDuration({ duration: workDuration, resetTime: true }));
+    } else if (mode === 'shortBreak' || mode === 'longBreak') {
+      dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: true }));
+    }
+  }, [workDuration, shortBreakDuration, mode, isRunning, dispatch]);
+
   useEffect(() => {
     if (!isRunning) return;
 

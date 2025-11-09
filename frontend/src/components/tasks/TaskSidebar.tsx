@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, Drawer, IconButton, Divider } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import { Close, Assignment } from '@mui/icons-material';
 import { styled } from '@mui/material/styles';
 import { TaskList } from './TaskList';
 import { AddTaskButton } from './AddTaskButton';
@@ -70,9 +70,12 @@ export const TaskSidebar: React.FC<TaskSidebarProps> = ({ open, onClose }) => {
       }}
     >
       <DrawerHeader>
-        <Typography variant="h6" fontWeight={700}>
-          📋 Mes Tâches
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Assignment sx={{ fontSize: 28, color: 'primary.main' }} />
+          <Typography variant="h6" fontWeight={700}>
+            Mes Tâches
+          </Typography>
+        </Box>
         <IconButton onClick={onClose}>
           <Close />
         </IconButton>
@@ -97,7 +100,7 @@ export const TaskSidebar: React.FC<TaskSidebarProps> = ({ open, onClose }) => {
         <AddTaskButton />
 
         <Box sx={{ flex: 1, overflow: 'hidden' }}>
-          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="text.secondary" sx={{ mb: 2, textAlign: 'center' }}>
             Liste des tâches
           </Typography>
           <TaskList />

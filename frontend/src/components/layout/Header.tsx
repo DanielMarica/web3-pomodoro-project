@@ -17,7 +17,7 @@ export const Header = () => {
   const [breakAnchor, setBreakAnchor] = useState<null | HTMLElement>(null);
   const [themeAnchor, setThemeAnchor] = useState<null | HTMLElement>(null);
 
-  const workDurations = [5, 10, 15, 20, 25, 30, 45, 60];
+  const workDurations = [1, 5, 10, 15, 20, 25, 30, 45, 60];
   const breakDurations = [5, 10, 15, 20];
   const themes = ['Light', 'Dark'];
 
@@ -115,7 +115,8 @@ export const Header = () => {
               key={duration}
               onClick={() => {
                 dispatch(setShortBreakDuration(duration));
-                // Mettre à jour le timer si on est en mode break
+                // Mettre à jour le timer immédiatement si on est en mode break
+                // Sinon, la durée sera utilisée lors du prochain changement de mode
                 if (mode === 'shortBreak' || mode === 'longBreak') {
                   dispatch(updateTimerDuration({ duration, resetTime: true }));
                 }

@@ -76,16 +76,37 @@ export const TaskItem: React.FC<TaskItemProps> = ({
           {task.title}
         </TaskTitle>
         
-        {task.pomodorosCount !== undefined && task.pomodorosCount > 0 && (
-          <Box>
+        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+          {/* Pomodoros réalisés */}
+          {task.pomodorosCount !== undefined && task.pomodorosCount > 0 && (
             <PomodoroChip
-              label={`🍅 ${task.pomodorosCount} pomodoro${task.pomodorosCount > 1 ? 's' : ''}`}
+              label={`${task.pomodorosCount}`}
+              size="small"
+              color="success"
+              variant="filled"
+            />
+          )}
+          
+          {/* Temps estimé */}
+          {task.estimatedPomodoros !== undefined && task.estimatedPomodoros > 0 && (
+            <PomodoroChip
+              label={`${task.estimatedPomodoros} pomodoro${task.estimatedPomodoros > 1 ? 's' : ''}`}
               size="small"
               color="primary"
               variant="outlined"
             />
-          </Box>
-        )}
+          )}
+          
+          {/* Pauses estimées */}
+          {task.estimatedBreakPomodoros !== undefined && task.estimatedBreakPomodoros > 0 && (
+            <PomodoroChip
+              label={`${task.estimatedBreakPomodoros} pause${task.estimatedBreakPomodoros > 1 ? 's' : ''}`}
+              size="small"
+              color="warning"
+              variant="outlined"
+            />
+          )}
+        </Box>
       </TaskContent>
       
       <IconButton

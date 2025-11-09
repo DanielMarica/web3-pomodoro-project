@@ -43,7 +43,7 @@ export const TaskList: React.FC = () => {
     return (
       <EmptyState>
         <Typography variant="body1">
-          📝 Aucune tâche pour le moment
+          Aucune tâche pour le moment
         </Typography>
         <Typography variant="body2" sx={{ mt: 1 }}>
           Ajoutez une tâche pour commencer !

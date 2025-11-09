@@ -7,6 +7,7 @@ interface SettingsState {
   longBreakDuration: number;
   soundEnabled: boolean;
   musicEnabled: boolean;
+  selectedMusic: string;      // ID de la musique sélectionnée
   theme: 'light' | 'dark';
 }
 
@@ -16,6 +17,7 @@ const initialState: SettingsState = {
   longBreakDuration: 15,
   soundEnabled: true,
   musicEnabled: false,
+  selectedMusic: 'lofi-1',    // Musique par défaut
   theme: 'light',
 };
 
@@ -41,6 +43,9 @@ const settingsSlice = createSlice({
     setTheme: (state, action: PayloadAction<'light' | 'dark'>) => {
       state.theme = action.payload;
     },
+    setSelectedMusic: (state, action: PayloadAction<string>) => {
+      state.selectedMusic = action.payload;
+    },
   },
 });
 
@@ -50,7 +55,8 @@ export const {
   setLongBreakDuration,
   toggleSound,
   toggleMusic, 
-  setTheme 
+  setTheme,
+  setSelectedMusic
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;
