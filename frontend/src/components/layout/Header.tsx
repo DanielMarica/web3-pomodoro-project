@@ -3,12 +3,14 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setWorkDuration, setShortBreakDuration, setTheme } from '../../features/settings/settingsSlice';
+import { updateTimerDuration } from '../../features/timer/timerSlice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
   const { workDuration, shortBreakDuration } = useAppSelector(
     (state) => state.settings
   );
+  const { mode } = useAppSelector((state) => state.timer);
 
   // États pour les menus
   const [workAnchor, setWorkAnchor] = useState<null | HTMLElement>(null);
@@ -64,6 +66,10 @@ export const Header = () => {
               key={duration}
               onClick={() => {
                 dispatch(setWorkDuration(duration));
+                // Mettre à jour le timer si on est en mode focus
+                if (mode === 'focus') {
+                  dispatch(updateTimerDuration({ duration, resetTime: true }));
+                }
                 setWorkAnchor(null);
               }}
               sx={{
@@ -109,6 +115,10 @@ export const Header = () => {
               key={duration}
               onClick={() => {
                 dispatch(setShortBreakDuration(duration));
+                // Mettre à jour le timer si on est en mode break
+                if (mode === 'shortBreak' || mode === 'longBreak') {
+                  dispatch(updateTimerDuration({ duration, resetTime: true }));
+                }
                 setBreakAnchor(null);
               }}
               sx={{

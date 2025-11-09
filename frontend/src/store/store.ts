@@ -11,6 +11,7 @@ export const store = configureStore({
     tasks: tasksReducer,
     sessions: sessionsReducer,
   },
+  devTools: import.meta.env.DEV, // Active Redux DevTools en développement (Vite)
 });
 
 export type RootState = ReturnType<typeof store.getState>;

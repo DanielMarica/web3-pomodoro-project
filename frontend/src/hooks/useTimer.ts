@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
-import { tick, completePomodoro, setMode, pauseTimer } from '../features/timer/timerSlice';
+import { tick, completePomodoro, setMode, pauseTimer, updateTimerDuration } from '../features/timer/timerSlice';
 import { incrementTaskPomodoro } from '../features/tasks/tasksSlice';
 import { addSession } from '../features/sessions/sessionsSlice';
 import { notifyWorkComplete, notifyBreakComplete } from '../utils/notifications';
@@ -28,8 +28,18 @@ export const useTimer = () => {
   const dispatch = useAppDispatch();
   const { isRunning, timeLeft, mode, totalTime } = useAppSelector(state => state.timer);
   const { activeTaskId } = useAppSelector(state => state.tasks);
-  const { soundEnabled } = useAppSelector(state => state.settings);
+  const { soundEnabled, workDuration, shortBreakDuration } = useAppSelector(state => state.settings);
   const { playWorkComplete, playBreakComplete } = useSound();
+
+  // Initialiser le timer avec les durées des settings au chargement
+  useEffect(() => {
+    if (mode === 'focus') {
+      dispatch(updateTimerDuration({ duration: workDuration, resetTime: true }));
+    } else if (mode === 'shortBreak') {
+      dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: true }));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // Seulement au montage initial
 
   useEffect(() => {
     if (!isRunning) return;
@@ -69,14 +79,18 @@ export const useTimer = () => {
             taskId: activeTaskId || undefined,
           }));
           
+          // Passer en mode pause et mettre à jour la durée
           dispatch(setMode('shortBreak'));
+          dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: true }));
         } else {
           notifyBreakComplete();
+          // Passer en mode travail et mettre à jour la durée
           dispatch(setMode('focus'));
+          dispatch(updateTimerDuration({ duration: workDuration, resetTime: true }));
         }
       }
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [isRunning, timeLeft, mode, dispatch, activeTaskId, soundEnabled, totalTime, playWorkComplete, playBreakComplete]);
+  }, [isRunning, timeLeft, mode, dispatch, activeTaskId, soundEnabled, totalTime, playWorkComplete, playBreakComplete, workDuration, shortBreakDuration]);
 };

@@ -31,19 +31,20 @@ const timerSlice = createSlice({
     },
     setMode: (state, action: PayloadAction<TimerMode>) => {
       state.mode = action.payload;
-      // Ajuste la durée selon le mode
-      if (action.payload === 'focus') {
-        state.totalTime = 25 * 60;
-      } else if (action.payload === 'shortBreak') {
-        state.totalTime = 5 * 60;
-      } else {
-        state.totalTime = 15 * 60;
-      }
-      state.timeLeft = state.totalTime;
+      // Note: la durée sera mise à jour via updateTimerDuration
     },
     setCustomTime: (state, action: PayloadAction<number>) => {
       state.totalTime = action.payload * 60;
       state.timeLeft = action.payload * 60;
+    },
+    // Nouvelle action pour mettre à jour le timer selon les settings
+    updateTimerDuration: (state, action: PayloadAction<{ duration: number; resetTime?: boolean }>) => {
+      const durationInSeconds = action.payload.duration * 60;
+      state.totalTime = durationInSeconds;
+      // Reset timeLeft seulement si demandé ou si le timer n'est pas en cours
+      if (action.payload.resetTime || !state.isRunning) {
+        state.timeLeft = durationInSeconds;
+      }
     },
     completePomodoro: (state) => {
       state.completedPomodoros += 1;
@@ -58,6 +59,7 @@ export const {
   resetTimer, 
   setMode, 
   setCustomTime,
+  updateTimerDuration,
   completePomodoro 
 } = timerSlice.actions;
 
