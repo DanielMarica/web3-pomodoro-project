@@ -7,10 +7,14 @@ import type { RootState } from './store/store';
 import { HomePage } from './pages/HomePage';
 import { MusicPage } from './pages/MusicPage';
 import { useTimer } from './hooks/useTimer';
+import { useMusic } from './hooks/useMusic';
 
 function AppContent() {
   // Hook personnalisé pour gérer le timer automatiquement
   useTimer();
+  
+  // Hook pour gérer la musique de fond
+  useMusic();
 
   // Lire le thème depuis Redux
   const themeMode = useSelector((state: RootState) => state.settings.theme);

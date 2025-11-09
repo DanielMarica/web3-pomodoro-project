@@ -12,8 +12,8 @@ const AddTaskContainer = styled(Box)(({ theme }) => ({
   padding: theme.spacing(2),
   backgroundColor: theme.palette.background.paper,
   borderRadius: '12px',
-  boxShadow: '0 2px 8px rgba(0, 0, 0, 0.05)',
-  border: '2px solid #000',
+  boxShadow: theme.palette.mode === 'dark' ? '0 2px 8px rgba(255, 255, 255, 0.05)' : '0 2px 8px rgba(0, 0, 0, 0.05)',
+  border: `2px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
 }));
 
 const StyledTextField = styled(TextField)({
@@ -36,14 +36,14 @@ const AddButton = styled(IconButton)(({ theme }) => ({
   transition: 'all 0.2s ease',
 }));
 
-const TimeSelector = styled(FormControl)(() => ({
+const TimeSelector = styled(FormControl)(({ theme }) => ({
   minWidth: 120,
   '& .MuiOutlinedInput-root': {
     borderRadius: '8px',
-    border: '2px solid #000',
-    backgroundColor: '#fff',
+    border: `2px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+    backgroundColor: theme.palette.background.paper,
     '&:hover': {
-      backgroundColor: '#f9f9f9',
+      backgroundColor: theme.palette.mode === 'dark' ? '#3a3a3a' : '#f9f9f9',
     },
   },
 }));

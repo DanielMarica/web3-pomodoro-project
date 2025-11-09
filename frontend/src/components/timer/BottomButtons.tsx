@@ -1,4 +1,4 @@
-import { Box, Button } from '@mui/material';
+import { Box, Button, useTheme } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
@@ -11,6 +11,7 @@ interface BottomButtonsProps {
 export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const theme = useTheme();
   const { musicEnabled } = useAppSelector((state) => state.settings);
 
   const buttonStyle = {
@@ -22,13 +23,13 @@ export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
     px: 4,
     py: 1.5,
     borderRadius: '50px',
-    border: '3px solid #000',
-    boxShadow: '4px 4px 0px #000',
+    border: `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+    boxShadow: theme.palette.mode === 'dark' ? '4px 4px 0px #555' : '4px 4px 0px #000',
     minWidth: '180px',
     '&:hover': {
       bgcolor: '#5568D3',
       transform: 'translateY(-2px)',
-      boxShadow: '6px 6px 0px #000',
+      boxShadow: theme.palette.mode === 'dark' ? '6px 6px 0px #555' : '6px 6px 0px #000',
     },
     transition: 'all 0.2s',
   };
@@ -55,11 +56,11 @@ export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
           sx={{
             ...buttonStyle,
             bgcolor: musicEnabled ? '#10B981' : '#EF4444',
-            border: '3px solid #000',
+            border: `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
             '&:hover': {
               bgcolor: musicEnabled ? '#059669' : '#DC2626',
               transform: 'translateY(-2px)',
-              boxShadow: '6px 6px 0px #000',
+              boxShadow: theme.palette.mode === 'dark' ? '6px 6px 0px #555' : '6px 6px 0px #000',
             },
           }}
         >

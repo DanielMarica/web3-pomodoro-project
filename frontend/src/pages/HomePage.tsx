@@ -15,7 +15,7 @@ export const HomePage = () => {
         width: '100%',
         minHeight: '100vh',
         height: '100%',
-        bgcolor: '#f5f5f5',
+        bgcolor: 'background.default',
         position: 'relative',
         overflow: 'hidden',
         display: 'flex',

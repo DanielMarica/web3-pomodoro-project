@@ -19,14 +19,14 @@ const TaskContainer = styled(Box)<{ isactive: string; iscompleted: string }>(({ 
   padding: theme.spacing(2),
   borderRadius: '12px',
   backgroundColor: theme.palette.background.paper,
-  border: `2px solid ${isactive === 'true' ? theme.palette.primary.main : 'transparent'}`,
+  border: `2px solid ${isactive === 'true' ? theme.palette.primary.main : (theme.palette.mode === 'dark' ? '#555' : 'transparent')}`,
   opacity: iscompleted === 'true' ? 0.6 : 1,
   transition: 'all 0.3s ease',
   cursor: 'pointer',
   
   '&:hover': {
     transform: 'translateX(4px)',
-    boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+    boxShadow: theme.palette.mode === 'dark' ? '0 4px 12px rgba(255, 255, 255, 0.1)' : '0 4px 12px rgba(0, 0, 0, 0.1)',
   },
 }));
 

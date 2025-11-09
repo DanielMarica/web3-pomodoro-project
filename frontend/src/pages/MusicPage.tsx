@@ -7,18 +7,43 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setSelectedMusic } from '../features/settings/settingsSlice';
 
-// Liste de 10 musiques pré-enregistrées
+// Liste de musiques disponibles (basée sur les fichiers réels)
 const musicList = [
-  { id: 'lofi-1', name: 'Lofi Chill Beats', genre: 'Lo-Fi', duration: '3:45' },
-  { id: 'lofi-2', name: 'Study Session', genre: 'Lo-Fi', duration: '4:12' },
-  { id: 'jazz-1', name: 'Smooth Jazz Piano', genre: 'Jazz', duration: '5:20' },
-  { id: 'ambient-1', name: 'Peaceful Ambient', genre: 'Ambient', duration: '6:30' },
-  { id: 'classical-1', name: 'Classical Focus', genre: 'Classical', duration: '4:55' },
-  { id: 'nature-1', name: 'Forest Sounds', genre: 'Nature', duration: '10:00' },
-  { id: 'electronic-1', name: 'Electronic Chill', genre: 'Electronic', duration: '3:58' },
-  { id: 'piano-1', name: 'Solo Piano Melodies', genre: 'Piano', duration: '5:15' },
-  { id: 'rain-1', name: 'Rain & Thunder', genre: 'Nature', duration: '8:00' },
-  { id: 'acoustic-1', name: 'Acoustic Guitar', genre: 'Acoustic', duration: '4:22' },
+  { 
+    id: 'groovy-vibe', 
+    name: 'Groovy Vibe', 
+    genre: 'Lo-Fi', 
+    duration: '7:07',
+    file: '/sounds/groovy-vibe-427121.mp3'
+  },
+  { 
+    id: 'embrace', 
+    name: 'Embrace', 
+    genre: 'Ambient', 
+    duration: '6:04',
+    file: '/sounds/embrace-364091.mp3'
+  },
+  { 
+    id: 'gorila', 
+    name: 'Gorila', 
+    genre: 'Hip-Hop', 
+    duration: '5:15',
+    file: '/sounds/gorila-315977.mp3'
+  },
+  { 
+    id: 'kugelsicher', 
+    name: 'Kugelsicher', 
+    genre: 'Electronic', 
+    duration: '5:02',
+    file: '/sounds/kugelsicher-by-tremoxbeatz-302838.mp3'
+  },
+  { 
+    id: 'the-last-point', 
+    name: 'The Last Point', 
+    genre: 'Electronic', 
+    duration: '6:34',
+    file: '/sounds/the-last-point-beat-electronic-digital-394291.mp3'
+  },
 ];
 
 export const MusicPage = () => {
@@ -34,7 +59,7 @@ export const MusicPage = () => {
     <Box
       sx={{
         minHeight: '100vh',
-        bgcolor: '#f5f5f5',
+        bgcolor: 'background.default',
         py: 4,
         px: { xs: 2, sm: 4, md: 6 },
       }}
@@ -53,12 +78,12 @@ export const MusicPage = () => {
           sx={{
             bgcolor: '#667EEA',
             color: '#fff',
-            border: '3px solid #000',
-            boxShadow: '4px 4px 0px #000',
+            border: (theme) => `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+            boxShadow: (theme) => theme.palette.mode === 'dark' ? '4px 4px 0px #555' : '4px 4px 0px #000',
             '&:hover': {
               bgcolor: '#5568D3',
               transform: 'translateY(-2px)',
-              boxShadow: '6px 6px 0px #000',
+              boxShadow: (theme) => theme.palette.mode === 'dark' ? '6px 6px 0px #555' : '6px 6px 0px #000',
             },
             transition: 'all 0.2s',
           }}
@@ -107,20 +132,24 @@ export const MusicPage = () => {
                 onClick={() => handleSelectMusic(music.id)}
                 sx={{
                   cursor: 'pointer',
-                  border: isSelected ? '4px solid #667EEA' : '3px solid #000',
+                  border: (theme) => isSelected 
+                    ? '4px solid #667EEA' 
+                    : `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
                   borderRadius: '16px',
-                  boxShadow: isSelected
+                  boxShadow: (theme) => isSelected
                     ? '6px 6px 0px #667EEA'
-                    : '4px 4px 0px #000',
-                  bgcolor: isSelected ? '#EEF2FF' : '#fff',
+                    : `4px 4px 0px ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+                  bgcolor: (theme) => isSelected 
+                    ? (theme.palette.mode === 'dark' ? '#1e3a8a' : '#EEF2FF')
+                    : 'background.paper',
                   transition: 'all 0.2s',
                   position: 'relative',
                   overflow: 'visible',
                   '&:hover': {
                     transform: 'translateY(-4px)',
-                    boxShadow: isSelected
+                    boxShadow: (theme) => isSelected
                       ? '8px 8px 0px #667EEA'
-                      : '6px 6px 0px #000',
+                      : `6px 6px 0px ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
                   },
                 }}
               >
@@ -134,7 +163,7 @@ export const MusicPage = () => {
                         right: -10,
                         bgcolor: '#10B981',
                         borderRadius: '50%',
-                        border: '3px solid #000',
+                        border: (theme) => `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
                         p: 0.5,
                       }}
                     >
@@ -160,7 +189,7 @@ export const MusicPage = () => {
                         bgcolor: '#667EEA',
                         borderRadius: '50%',
                         p: 2,
-                        border: '3px solid #000',
+                        border: (theme) => `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
                       }}
                     >
                       <MusicNoteIcon
@@ -202,7 +231,7 @@ export const MusicPage = () => {
                   <Typography
                     sx={{
                       textAlign: 'center',
-                      color: '#666',
+                      color: 'text.secondary',
                       fontSize: '12px',
                     }}
                   >
@@ -226,7 +255,7 @@ export const MusicPage = () => {
       >
         <Typography
           sx={{
-            color: '#666',
+            color: 'text.secondary',
             fontSize: '14px',
             fontStyle: 'italic',
           }}

@@ -17,7 +17,7 @@ const initialState: SettingsState = {
   longBreakDuration: 15,
   soundEnabled: true,
   musicEnabled: false,
-  selectedMusic: 'lofi-1',    // Musique par défaut
+  selectedMusic: 'groovy-vibe',    // Musique par défaut
   theme: 'light',
 };
 

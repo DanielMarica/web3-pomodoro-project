@@ -30,12 +30,12 @@ export const TimerControls = ({ variant }: TimerControlsProps) => {
             px: 5,
             py: 1.5,
             borderRadius: '50px',
-            border: '3px solid #000',
-            boxShadow: '4px 4px 0px #000',
+            border: (theme) => `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+            boxShadow: (theme) => theme.palette.mode === 'dark' ? '4px 4px 0px #555' : '4px 4px 0px #000',
             '&:hover': {
               bgcolor: '#6BC668',
               transform: 'translateY(-2px)',
-              boxShadow: '6px 6px 0px #000',
+              boxShadow: (theme) => theme.palette.mode === 'dark' ? '6px 6px 0px #555' : '6px 6px 0px #000',
             },
             transition: 'all 0.2s',
           }}
@@ -56,11 +56,11 @@ export const TimerControls = ({ variant }: TimerControlsProps) => {
         sx={{
           display: 'flex',
           gap: 2,
-          bgcolor: '#fff',
-          border: '3px solid #000',
+          bgcolor: 'background.paper',
+          border: (theme) => `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
           borderRadius: '50px',
           p: 0.5,
-          boxShadow: '4px 4px 0px #000',
+          boxShadow: (theme) => theme.palette.mode === 'dark' ? '4px 4px 0px #555' : '4px 4px 0px #000',
         }}
       >
         {/* Pause Button */}

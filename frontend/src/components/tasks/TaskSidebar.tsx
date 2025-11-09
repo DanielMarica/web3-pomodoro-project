@@ -30,8 +30,9 @@ const StatsBox = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'space-around',
   padding: theme.spacing(2),
-  backgroundColor: theme.palette.grey[100],
+  backgroundColor: theme.palette.mode === 'dark' ? '#3a3a3a' : theme.palette.grey[100],
   borderRadius: '12px',
+  border: `2px solid ${theme.palette.mode === 'dark' ? '#555' : 'transparent'}`,
 }));
 
 const StatItem = styled(Box)({

@@ -46,7 +46,7 @@ export const CircularTimer = () => {
         <svg height={radius * 2} width={radius * 2}>
           {/* Cercle de fond */}
           <circle
-            stroke="#e0e0e0"
+            stroke="rgba(128, 128, 128, 0.3)"
             fill="transparent"
             strokeWidth={strokeWidth}
             r={normalizedRadius}
@@ -89,7 +89,7 @@ export const CircularTimer = () => {
             sx={{
               fontSize: { xs: '48px', sm: '60px', md: '72px' }, // Responsive font size
               fontWeight: 'bold',
-              color: '#000',
+              color: 'text.primary',
               lineHeight: 1,
               mb: 1,
             }}
@@ -101,7 +101,7 @@ export const CircularTimer = () => {
             sx={{
               fontSize: { xs: '14px', sm: '16px', md: '18px' }, // Responsive font size
               fontWeight: 'bold',
-              color: '#000',
+              color: 'text.primary',
               letterSpacing: '2px',
             }}
           >

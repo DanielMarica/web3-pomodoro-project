@@ -39,7 +39,7 @@ export const Header = () => {
         <Button
           onClick={(e) => setWorkAnchor(e.currentTarget)}
           sx={{
-            color: '#000',
+            color: 'text.primary',
             fontWeight: 'bold',
             fontSize: { xs: '14px', sm: '16px', md: '18px' }, // Taille responsive
             textTransform: 'none',
@@ -55,7 +55,7 @@ export const Header = () => {
           onClose={() => setWorkAnchor(null)}
           PaperProps={{
             sx: {
-              border: '2px solid #000',
+              border: (theme) => `2px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
               borderRadius: '12px',
               mt: 1,
             },
@@ -74,7 +74,9 @@ export const Header = () => {
               }}
               sx={{
                 fontWeight: duration === workDuration ? 'bold' : 'normal',
-                bgcolor: duration === workDuration ? '#f0f0f0' : 'transparent',
+                bgcolor: (theme) => duration === workDuration 
+                  ? (theme.palette.mode === 'dark' ? '#3a3a3a' : '#f0f0f0')
+                  : 'transparent',
               }}
             >
               {duration} minutes
@@ -88,7 +90,7 @@ export const Header = () => {
         <Button
           onClick={(e) => setBreakAnchor(e.currentTarget)}
           sx={{
-            color: '#000',
+            color: 'text.primary',
             fontWeight: 'bold',
             fontSize: { xs: '14px', sm: '16px', md: '18px' }, // Taille responsive
             textTransform: 'none',
@@ -104,7 +106,7 @@ export const Header = () => {
           onClose={() => setBreakAnchor(null)}
           PaperProps={{
             sx: {
-              border: '2px solid #000',
+              border: (theme) => `2px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
               borderRadius: '12px',
               mt: 1,
             },
@@ -124,7 +126,9 @@ export const Header = () => {
               }}
               sx={{
                 fontWeight: duration === shortBreakDuration ? 'bold' : 'normal',
-                bgcolor: duration === shortBreakDuration ? '#f0f0f0' : 'transparent',
+                bgcolor: (theme) => duration === shortBreakDuration 
+                  ? (theme.palette.mode === 'dark' ? '#3a3a3a' : '#f0f0f0')
+                  : 'transparent',
               }}
             >
               {duration} minutes
@@ -138,7 +142,7 @@ export const Header = () => {
         <Button
           onClick={(e) => setThemeAnchor(e.currentTarget)}
           sx={{
-            color: '#000',
+            color: 'text.primary',
             fontWeight: 'bold',
             fontSize: { xs: '14px', sm: '16px', md: '18px' }, // Taille responsive
             textTransform: 'none',
@@ -154,7 +158,7 @@ export const Header = () => {
           onClose={() => setThemeAnchor(null)}
           PaperProps={{
             sx: {
-              border: '2px solid #000',
+              border: (theme) => `2px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
               borderRadius: '12px',
               mt: 1,
             },
