@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 import { TaskItem } from './TaskItem';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { toggleTask, deleteTask, setActiveTask } from '../../features/tasks/tasksSlice';
+import type { Task } from '../../types/task.types';
 
 const ListContainer = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -54,7 +55,7 @@ export const TaskList: React.FC = () => {
 
   return (
     <ListContainer>
-      {tasks.map((task) => (
+      {tasks.map((task: Task) => (
         <TaskItem
           key={task.id}
           task={task}

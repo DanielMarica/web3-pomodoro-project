@@ -1,15 +1,14 @@
 import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import { Provider, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
-import { store } from './store/store';
 import type { RootState } from './store/store';
 import { HomePage } from './pages/HomePage';
 import { MusicPage } from './pages/MusicPage';
 import { useTimer } from './hooks/useTimer';
 import { useMusic } from './hooks/useMusic';
 
-function AppContent() {
+function App() {
   // Hook personnalisé pour gérer le timer automatiquement
   useTimer();
   
@@ -50,18 +49,9 @@ function AppContent() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/music" element={<MusicPage />} />
-          {/* Ajoute d'autres routes ici plus tard */}
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
-  );
-}
-
-function App() {
-  return (
-    <Provider store={store}>
-      <AppContent />
-    </Provider>
   );
 }
 

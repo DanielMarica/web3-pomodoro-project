@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import { TaskList } from './TaskList';
 import { AddTaskButton } from './AddTaskButton';
 import { useAppSelector } from '../../store/hooks';
+import type { Task } from '../../types/task.types';
 
 interface TaskSidebarProps {
   open: boolean;
@@ -55,7 +56,7 @@ export const TaskSidebar: React.FC<TaskSidebarProps> = ({ open, onClose }) => {
   const { tasks } = useAppSelector((state) => state.tasks);
   const { completedPomodoros } = useAppSelector((state) => state.timer);
 
-  const completedTasks = tasks.filter((task) => task.completed).length;
+  const completedTasks = tasks.filter((task: Task) => task.completed).length;
   const totalTasks = tasks.length;
 
   return (

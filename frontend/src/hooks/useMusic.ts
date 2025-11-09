@@ -16,36 +16,51 @@ export const useMusic = () => {
   const { isRunning } = useAppSelector((state) => state.timer);
 
   useEffect(() => {
-    // Créer l'élément audio s'il n'existe pas
+    // Créer l'élément audio une seule fois
     if (!audioRef.current) {
       audioRef.current = new Audio();
-      audioRef.current.loop = true; // Boucler la musique
-      audioRef.current.volume = 0.3; // Volume à 30%
+      audioRef.current.loop = true;
+      audioRef.current.volume = 0.3;
     }
 
     const audio = audioRef.current;
-
-    // Changer la source si la musique sélectionnée change
     const musicFile = musicFiles[selectedMusic];
-    if (musicFile && audio.src !== window.location.origin + musicFile) {
-      audio.src = musicFile;
-      audio.load();
+
+    // Définir la source si elle n'est pas déjà définie ou si la musique change
+    if (musicFile) {
+      const fullPath = window.location.origin + musicFile;
+      if (audio.src !== fullPath) {
+        const wasPlaying = !audio.paused;
+        audio.pause();
+        audio.src = musicFile;
+        audio.load();
+        
+        // Si la musique jouait avant le changement, relancer
+        if (wasPlaying && musicEnabled && isRunning) {
+          audio.play().catch(() => {
+            // Autoplay bloqué par le navigateur (normal)
+          });
+        }
+      }
     }
 
-    // Jouer ou arrêter la musique selon les conditions
-    if (musicEnabled && isRunning && musicFile) {
-      audio.play().catch((err) => {
-        console.error('Erreur lors de la lecture de la musique:', err);
-        // Note: Chrome bloque l'autoplay audio jusqu'à ce que l'utilisateur interagisse avec la page
-      });
+    // Gérer la lecture/pause de la musique
+    const shouldPlay = musicEnabled && isRunning && !!musicFile;
+
+    if (shouldPlay) {
+      // Lancer la musique si elle est en pause
+      if (audio.paused) {
+        audio.play().catch(() => {
+          // Autoplay bloqué par le navigateur (nécessite interaction utilisateur)
+        });
+      }
     } else {
-      audio.pause();
+      // Arrêter la musique
+      if (!audio.paused) {
+        audio.pause();
+      }
     }
 
-    // Cleanup: arrêter la musique quand le composant est démonté
-    return () => {
-      audio.pause();
-    };
   }, [musicEnabled, selectedMusic, isRunning]);
 
   return null;

@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { tick, completePomodoro, setMode, pauseTimer, updateTimerDuration } from '../features/timer/timerSlice';
 import { incrementTaskPomodoro } from '../features/tasks/tasksSlice';
-import { addSession } from '../features/sessions/sessionsSlice';
-import { notifyWorkComplete, notifyBreakComplete } from '../utils/notifications';
 // Fallback local implementation of useSound in case './useSound' module is missing
 // Provides playWorkComplete and playBreakComplete no-op / audio play helpers.
 const useSound = () => {
@@ -31,27 +29,22 @@ export const useTimer = () => {
   const { soundEnabled, workDuration, shortBreakDuration } = useAppSelector(state => state.settings);
   const { playWorkComplete, playBreakComplete } = useSound();
 
-  // Initialiser le timer avec les durées des settings au chargement
-  useEffect(() => {
-    if (mode === 'focus') {
-      dispatch(updateTimerDuration({ duration: workDuration, resetTime: true }));
-    } else if (mode === 'shortBreak') {
-      dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: true }));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // Seulement au montage initial
+  // ❌ SUPPRIMER ce useEffect qui réinitialise le timer au montage !
+  // Redux Persist charge automatiquement les valeurs sauvegardées
+  // Si on appelle updateTimerDuration ici, ça écrase timeLeft persisté !
 
-  // Synchroniser le timer quand les settings changent (si le timer n'est pas en cours)
+  // Synchroniser le timer quand les settings changent (UNIQUEMENT si timer à 0 ou reset)
   useEffect(() => {
-    // Ne pas mettre à jour si le timer est en cours d'exécution
-    if (isRunning) return;
+    // Ne RIEN faire si le timer est en cours ou si timeLeft != totalTime (en cours d'utilisation)
+    if (isRunning || timeLeft !== totalTime) return;
     
+    // Mettre à jour UNIQUEMENT si le timer est au repos (timeLeft === totalTime)
     if (mode === 'focus') {
-      dispatch(updateTimerDuration({ duration: workDuration, resetTime: true }));
+      dispatch(updateTimerDuration({ duration: workDuration, resetTime: false }));
     } else if (mode === 'shortBreak' || mode === 'longBreak') {
-      dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: true }));
+      dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: false }));
     }
-  }, [workDuration, shortBreakDuration, mode, isRunning, dispatch]);
+  }, [workDuration, shortBreakDuration, mode, isRunning, timeLeft, totalTime, dispatch]);
 
   useEffect(() => {
     if (!isRunning) return;
@@ -72,9 +65,8 @@ export const useTimer = () => {
           }
         }
 
-        // Notifications
+        // Traitement de la fin du timer
         if (mode === 'focus') {
-          notifyWorkComplete();
           dispatch(completePomodoro());
           
           // Incrémenter le compteur de pomodoros de la tâche active
@@ -82,20 +74,10 @@ export const useTimer = () => {
             dispatch(incrementTaskPomodoro(activeTaskId));
           }
           
-          // Enregistrer la session
-          dispatch(addSession({
-            id: Date.now().toString(),
-            type: mode,
-            duration: totalTime,
-            completedAt: new Date(),
-            taskId: activeTaskId || undefined,
-          }));
-          
           // Passer en mode pause et mettre à jour la durée
           dispatch(setMode('shortBreak'));
           dispatch(updateTimerDuration({ duration: shortBreakDuration, resetTime: true }));
         } else {
-          notifyBreakComplete();
           // Passer en mode travail et mettre à jour la durée
           dispatch(setMode('focus'));
           dispatch(updateTimerDuration({ duration: workDuration, resetTime: true }));
