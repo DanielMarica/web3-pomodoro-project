@@ -1,13 +1,15 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useState } from 'react';
 import { Header } from '../components/layout/Header';
 import { CircularTimer } from '../components/timer/CircularTimer';
 import { BottomButtons } from '../components/timer/BottomButtons';
 import { TaskSidebar } from '../components/tasks/TaskSidebar';
+import { useAppSelector } from '../store/hooks';
 
 export const HomePage = () => {
   const [showTasks, setShowTasks] = useState(false);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
   return (
     <Box
@@ -38,6 +40,33 @@ export const HomePage = () => {
           py: 4,
         }}
       >
+        {/* Message de bienvenue - Juste au-dessus du timer */}
+        {isAuthenticated && user?.username && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            style={{ 
+              marginBottom: '3rem', 
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography
+              variant="h4"
+              sx={{
+                fontWeight: 'bold',
+                color: 'text.primary', // Noir en mode clair, blanc en mode sombre
+                textAlign: 'center',
+                fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' },
+              }}
+            >
+              Bienvenue Pomodoeur {user.username} 
+            </Typography>
+          </motion.div>
+        )}
+
         {/* Timer circulaire */}
         <motion.div
           initial={{ scale: 0.8, opacity: 0 }}

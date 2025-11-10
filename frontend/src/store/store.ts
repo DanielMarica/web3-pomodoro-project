@@ -4,6 +4,7 @@ import storage from 'redux-persist/lib/storage'; // localStorage
 import timerReducer from '../features/timer/timerSlice';
 import settingsReducer from '../features/settings/settingsSlice';
 import tasksReducer from '../features/tasks/tasksSlice';
+import authReducer from '../features/auth/authSlice';
 
 // Configuration de la persistance pour chaque slice
 const timerPersistConfig = {
@@ -25,11 +26,18 @@ const tasksPersistConfig = {
   // Sauvegarder toutes les tâches
 };
 
+const authPersistConfig = {
+  key: 'auth',
+  storage,
+  // Sauvegarder l'état d'authentification
+};
+
 export const store = configureStore({
   reducer: {
     timer: persistReducer(timerPersistConfig, timerReducer),
     settings: persistReducer(settingsPersistConfig, settingsReducer),
     tasks: persistReducer(tasksPersistConfig, tasksReducer),
+    auth: persistReducer(authPersistConfig, authReducer),
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

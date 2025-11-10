@@ -1,21 +1,26 @@
 import { Box, Menu, MenuItem, Button } from '@mui/material';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { setWorkDuration, setShortBreakDuration, setTheme } from '../../features/settings/settingsSlice';
 import { updateTimerDuration } from '../../features/timer/timerSlice';
+import { logout } from '../../features/auth/authSlice';
 
 export const Header = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const { workDuration, shortBreakDuration } = useAppSelector(
     (state) => state.settings
   );
   const { mode } = useAppSelector((state) => state.timer);
+  const { isAuthenticated, user } = useAppSelector((state) => state.auth);
 
   // États pour les menus
   const [workAnchor, setWorkAnchor] = useState<null | HTMLElement>(null);
   const [breakAnchor, setBreakAnchor] = useState<null | HTMLElement>(null);
   const [themeAnchor, setThemeAnchor] = useState<null | HTMLElement>(null);
+  const [authAnchor, setAuthAnchor] = useState<null | HTMLElement>(null);
 
   const workDurations = [1, 5, 10, 15, 20, 25, 30, 45, 60];
   const breakDurations = [5, 10, 15, 20];
@@ -175,6 +180,84 @@ export const Header = () => {
               {themeOption}
             </MenuItem>
           ))}
+        </Menu>
+      </Box>
+
+      {/* My Account */}
+      <Box>
+        <Button
+          onClick={(e) => setAuthAnchor(e.currentTarget)}
+          sx={{
+            color: 'text.primary',
+            fontWeight: 'bold',
+            fontSize: { xs: '14px', sm: '16px', md: '18px' }, // Taille responsive
+            textTransform: 'none',
+            '&:hover': { bgcolor: 'transparent' },
+          }}
+          endIcon={<KeyboardArrowDownIcon />}
+        >
+          My Account
+        </Button>
+        <Menu
+          anchorEl={authAnchor}
+          open={Boolean(authAnchor)}
+          onClose={() => setAuthAnchor(null)}
+          PaperProps={{
+            sx: {
+              border: (theme) => `2px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+              borderRadius: '12px',
+              mt: 1,
+            },
+          }}
+        >
+          {isAuthenticated ? (
+            <>
+              {/* Info utilisateur */}
+              <MenuItem disabled sx={{ opacity: 1 }}>
+                <Box>
+                  <Box sx={{ fontWeight: 'bold', fontSize: '14px' }}>
+                    {user?.username || user?.email}
+                  </Box>
+                  {user?.email && user?.username && (
+                    <Box sx={{ fontSize: '12px', color: 'text.secondary' }}>
+                      {user.email}
+                    </Box>
+                  )}
+                </Box>
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  dispatch(logout());
+                  setAuthAnchor(null);
+                }}
+                sx={{
+                  color: 'error.main',
+                  fontWeight: 'bold',
+                }}
+              >
+                Déconnexion
+              </MenuItem>
+            </>
+          ) : (
+            <>
+              <MenuItem
+                onClick={() => {
+                  navigate('/login');
+                  setAuthAnchor(null);
+                }}
+              >
+                Se connecter
+              </MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate('/signup');
+                  setAuthAnchor(null);
+                }}
+              >
+                S'inscrire
+              </MenuItem>
+            </>
+          )}
         </Menu>
       </Box>
     </Box>

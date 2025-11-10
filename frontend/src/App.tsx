@@ -5,6 +5,8 @@ import { useMemo } from 'react';
 import type { RootState } from './store/store';
 import { HomePage } from './pages/HomePage';
 import { MusicPage } from './pages/MusicPage';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignupPage';
 import { useTimer } from './hooks/useTimer';
 import { useMusic } from './hooks/useMusic';
 
@@ -49,6 +51,8 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/music" element={<MusicPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>
