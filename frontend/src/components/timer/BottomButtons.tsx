@@ -1,0 +1,79 @@
+import { Box, Button, useTheme } from '@mui/material';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { toggleMusic } from '../../features/settings/settingsSlice';
+
+interface BottomButtonsProps {
+  onTasksClick: () => void;
+}
+
+export const BottomButtons = ({ onTasksClick }: BottomButtonsProps) => {
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
+  const theme = useTheme();
+  const { musicEnabled } = useAppSelector((state) => state.settings);
+
+  const buttonStyle = {
+    bgcolor: '#667EEA',
+    color: '#fff',
+    fontWeight: 'bold',
+    fontSize: '18px',
+    textTransform: 'none' as const,
+    px: 4,
+    py: 1.5,
+    borderRadius: '50px',
+    border: `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+    boxShadow: theme.palette.mode === 'dark' ? '4px 4px 0px #555' : '4px 4px 0px #000',
+    minWidth: '180px',
+    '&:hover': {
+      bgcolor: '#5568D3',
+      transform: 'translateY(-2px)',
+      boxShadow: theme.palette.mode === 'dark' ? '6px 6px 0px #555' : '6px 6px 0px #000',
+    },
+    transition: 'all 0.2s',
+  };
+
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        gap: 3,
+        alignItems: 'center',
+      }}
+    >
+      {/* My Music */}
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button onClick={() => navigate('/music')} sx={buttonStyle}>
+          My Music
+        </Button>
+      </motion.div>
+
+      {/* MUSIC Toggle */}
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button
+          onClick={() => dispatch(toggleMusic())}
+          sx={{
+            ...buttonStyle,
+            bgcolor: musicEnabled ? '#10B981' : '#EF4444',
+            border: `3px solid ${theme.palette.mode === 'dark' ? '#555' : '#000'}`,
+            '&:hover': {
+              bgcolor: musicEnabled ? '#059669' : '#DC2626',
+              transform: 'translateY(-2px)',
+              boxShadow: theme.palette.mode === 'dark' ? '6px 6px 0px #555' : '6px 6px 0px #000',
+            },
+          }}
+        >
+          {musicEnabled ? 'MUSIC ON' : 'MUSIC OFF'}
+        </Button>
+      </motion.div>
+
+      {/* My Tasks */}
+      <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+        <Button onClick={onTasksClick} sx={buttonStyle}>
+          My Tasks
+        </Button>
+      </motion.div>
+    </Box>
+  );
+};

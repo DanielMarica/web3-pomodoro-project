@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ThemeProvider, createTheme, CssBaseline } from '@mui/material';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useMemo } from 'react';
+import type { RootState } from './store/store';
+import { HomePage } from './pages/HomePage';
+import { MusicPage } from './pages/MusicPage';
+import { useTimer } from './hooks/useTimer';
+import { useMusic } from './hooks/useMusic';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Hook personnalisé pour gérer le timer automatiquement
+  useTimer();
+  
+  // Hook pour gérer la musique de fond
+  useMusic();
+
+  // Lire le thème depuis Redux
+  const themeMode = useSelector((state: RootState) => state.settings.theme);
+
+  // Créer le thème dynamiquement basé sur Redux
+  const theme = useMemo(
+    () =>
+      createTheme({
+        typography: {
+          fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+        },
+        palette: {
+          mode: themeMode, // 'light' ou 'dark'
+          primary: {
+            main: '#667EEA',
+          },
+          secondary: {
+            main: '#76D672',
+          },
+          background: {
+            default: themeMode === 'light' ? '#f5f5f5' : '#1a1a1a',
+            paper: themeMode === 'light' ? '#ffffff' : '#2d2d2d',
+          },
+        },
+      }),
+    [themeMode]
+  );
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/music" element={<MusicPage />} />
+        </Routes>
+      </BrowserRouter>
+    </ThemeProvider>
+  );
 }
 
-export default App
+export default App;
