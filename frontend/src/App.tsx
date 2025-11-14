@@ -7,6 +7,7 @@ import { HomePage } from './pages/HomePage';
 import { MusicPage } from './pages/MusicPage';
 import { LoginPage } from './pages/LoginPage';
 import { SignupPage } from './pages/SignupPage';
+import { CryptoTrackerPage } from './pages/CryptoPage';
 import { useTimer } from './hooks/useTimer';
 import { useMusic } from './hooks/useMusic';
 
@@ -51,6 +52,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/music" element={<MusicPage />} />
+          <Route path="/crypto" element={<CryptoTrackerPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
         </Routes>

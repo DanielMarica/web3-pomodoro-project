@@ -183,6 +183,22 @@ export const Header = () => {
         </Menu>
       </Box>
 
+      {/* Crypto Tracker */}
+      <Box>
+        <Button
+          onClick={() => navigate('/crypto')}
+          sx={{
+            color: 'text.primary',
+            fontWeight: 'bold',
+            fontSize: { xs: '14px', sm: '16px', md: '18px' },
+            textTransform: 'none',
+            '&:hover': { bgcolor: 'transparent' },
+          }}
+        >
+          💰 Crypto
+        </Button>
+      </Box>
+
       {/* My Account */}
       <Box>
         <Button

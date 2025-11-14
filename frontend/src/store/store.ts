@@ -5,39 +5,41 @@ import timerReducer from '../features/timer/timerSlice';
 import settingsReducer from '../features/settings/settingsSlice';
 import tasksReducer from '../features/tasks/tasksSlice';
 import authReducer from '../features/auth/authSlice';
+import cryptoReducer from '../features/cryptoThunk/cryptoSlice';
 
-// Configuration de la persistance pour chaque slice
+// Configuration de la persistance pour chaque slice (typage simplifié)
 const timerPersistConfig = {
   key: 'timer',
   storage,
-  // Sauvegarder TOUT le state du timer (y compris isRunning pour préserver la progression)
 };
 
 const settingsPersistConfig = {
   key: 'settings',
   storage,
   blacklist: ['musicEnabled'], // Ne PAS sauvegarder musicEnabled (revient à OFF après refresh)
-  // Sauvegarder le reste: theme, workDuration, selectedMusic, etc.
 };
 
 const tasksPersistConfig = {
   key: 'tasks',
   storage,
-  // Sauvegarder toutes les tâches
 };
 
 const authPersistConfig = {
   key: 'auth',
   storage,
-  // Sauvegarder l'état d'authentification
 };
 
 export const store = configureStore({
   reducer: {
+    // @ts-expect-error - redux-persist type compatibility
     timer: persistReducer(timerPersistConfig, timerReducer),
+    // @ts-expect-error - redux-persist type compatibility
     settings: persistReducer(settingsPersistConfig, settingsReducer),
+    // @ts-expect-error - redux-persist type compatibility
     tasks: persistReducer(tasksPersistConfig, tasksReducer),
+    // @ts-expect-error - redux-persist type compatibility
     auth: persistReducer(authPersistConfig, authReducer),
+    crypto: cryptoReducer, // Pas de persistance pour les cryptos (données temps réel)
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
